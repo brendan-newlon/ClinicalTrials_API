@@ -9,7 +9,7 @@
 #' @param case_sensitive is it case sensitive?
 #'
 #' @return a vector naming the fields available via the ClinicalTrials API, optionally filtered
-#' @import magrittr
+#' @importFrom magrittr `%>%`
 #' @export
 #'
 get_ct_fields = function(all = F, starts_with_str = NULL, contains_str = NULL, case_sensitive=F){
