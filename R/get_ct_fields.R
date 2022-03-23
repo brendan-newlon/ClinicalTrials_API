@@ -13,11 +13,14 @@
 #' @export
 #'
 get_ct_fields = function(all = F, starts_with_str = NULL, contains_str = NULL, case_sensitive=F){
+  
+  `%>%` = magrittr::`%>%`
+  
   search_result = httr::GET("https://clinicaltrials.gov/api/info/study_fields_list")
   if (search_result$status != 200) {stop(httr::http_status(search_result)$message)}
   parsed_result <- XML::xmlParse(httr::content(search_result, as = "text"))
   result_list <- XML::xmlToList(parsed_result)
-  x = all_chr = result_list$FieldList %>% flatten_chr()
+  x = all_chr = result_list$FieldList %>% purrr::flatten_chr()
 
   if(all){
     x = x %>% as.df %>% .[["x"]]
@@ -27,7 +30,7 @@ get_ct_fields = function(all = F, starts_with_str = NULL, contains_str = NULL, c
   x = x %>% as.df %>% t %>% as.df
   x = x %>% stats::setNames(x[1,]) %>% .[-1,] %>% tibble::remove_rownames()
 
-  orig_names = tibble(orig = names(x), lower = tolower(names(x)))
+  orig_names = tibble::tibble(orig = names(x), lower = tolower(names(x)))
 
   if(!case_sensitive){
     x = x %>% stats::setNames(tolower(names(x)))
