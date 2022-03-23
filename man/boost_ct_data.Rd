@@ -16,7 +16,7 @@ boost_ct_data(df, search_col_name_str, request_fields, api_terms_max = 150)
 \item{api_terms_max}{default 150, but reduce this is the fields are data-heavy and the API throws an error}
 }
 \value{
-
+dataframe plus result fields from the API
 }
 \description{
 Enhance a dataframe by searching the clinicaltrials API for values in a specified column and requesting additional fields of results from the API to add as new columns to your data.frame

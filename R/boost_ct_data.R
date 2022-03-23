@@ -46,7 +46,6 @@ boost_ct_data = function(
   request_fields ,
   api_terms_max = 150
 ) {
-  `%>%` = magrittr::`%>%`
   suppressWarnings( if(all(c(request_fields) == c(get_ct_fields()))){
     request_fields = get_ct_fields()[get_ct_fields()!= search_col_name_str]
   }

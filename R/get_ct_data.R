@@ -36,7 +36,6 @@ ct_search = function (
   request_fields = "NCTId,Condition,BriefTitle,OrgStudyId,EligibilityCriteria",
   count = NULL
 ){
-  `%>%` = magrittr::`%>%`
   query_url <- "https://clinicaltrials.gov/api/query/study_fields?expr="
 
   search_expr = utils::URLencode(search_expr %>% gsub("&", "", .))
@@ -83,7 +82,6 @@ get_ct_data = function(
   count = NULL,
   remove_null_results = F ## ------ if TRUE, this seems to be broken. Eliminates columns with some empty results, even if some results are there
   ){
-  `%>%` = magrittr::`%>%`
   ## api limits to 20 fields requested per query. How many api calls are required to get all fields?
   calls = ((length(request_fields)-min(length(request_fields),20))/19 )%>% round_up()
 

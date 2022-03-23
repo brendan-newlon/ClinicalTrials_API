@@ -9,12 +9,10 @@
 #' @param case_sensitive is it case sensitive?
 #'
 #' @return a vector naming the fields available via the ClinicalTrials API, optionally filtered
-#' @importFrom magrittr `%>%`
 #' @export
 #'
 get_ct_fields = function(all = F, starts_with_str = NULL, contains_str = NULL, case_sensitive=F){
   
-  `%>%` = magrittr::`%>%`
   
   search_result = httr::GET("https://clinicaltrials.gov/api/info/study_fields_list")
   if (search_result$status != 200) {stop(httr::http_status(search_result)$message)}

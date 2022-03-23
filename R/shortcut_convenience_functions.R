@@ -16,7 +16,7 @@ as.df = function(x){df = as.data.frame(x,stringsAsFactors=F); return(df)}
 #' @import magrittr
 #' @export
 #'
-no_na_cols = function(df){  `%>%` = magrittr::`%>%`
+no_na_cols = function(df){  
   df%>%.[,colSums(is.na(.))<nrow(.)]}
 
 #' Remove rows from a data.frame that have only NA values
@@ -28,7 +28,6 @@ no_na_cols = function(df){  `%>%` = magrittr::`%>%`
 #' @export
 #'
 no_na_rows = function(df){
-  `%>%` = magrittr::`%>%`
   df%>%.[rowSums(is.na(.))!= ncol(.),]}
 
 #' Generate a datetime stamp
@@ -82,7 +81,6 @@ eval_as_text = function(x){eval(parse(text=x))}
 #' @export
 #'
 unvector = function(x) {
-  `%>%` = magrittr::`%>%`
   truth = try({
     parse(text = x) %>% eval %>% length() > 1
   }, silent = T)
@@ -124,7 +122,6 @@ prefix = function(x, prefix) {
 #' @export
 #'
 split_longer = function(df,col_to_split,by_regex, encoding = "UTF-8") {
-  `%>%` = magrittr::`%>%`
   df[[col_to_split]] = df[[col_to_split]] %>% lapply(., function(x) { stringr::str_split(x, by_regex) })
   while(class(df[[col_to_split]]) == "list"){
     df = df %>% tidyr::unnest_longer(col_to_split)}
@@ -141,7 +138,6 @@ split_longer = function(df,col_to_split,by_regex, encoding = "UTF-8") {
 #' @export
 #'
 split_longer_vector = function( df, col_name_chr ){
-  `%>%` = magrittr::`%>%`
   for(the_col in 1:length(col_name_chr)){
     df[[tidyselect::all_of(col_name_chr)[[the_col]]]] = purrr::map(df[[tidyselect::all_of(col_name_chr)[[the_col]]]], function(i){
       if(isTRUE(stringr::str_detect(i, "^c\\("))){  # This could be adapted to handle "list\\(" too -----------------------
@@ -165,7 +161,6 @@ split_longer_vector = function( df, col_name_chr ){
 #' @export
 #'
 split_longer_any_vector_cols = function(df){
-  `%>%` = magrittr::`%>%`
   for (any_col in seq_along(df)){
     this_col = names(df[any_col])
     if(
