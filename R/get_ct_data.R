@@ -26,6 +26,7 @@
 #' @param count developer's note: can't remember why this is here... ignore it
 #'
 #' @return results as a data.frame
+#' @import magrittr
 #' @export
 #'
 ct_search = function (
@@ -37,7 +38,7 @@ ct_search = function (
 ){
   query_url <- "https://clinicaltrials.gov/api/query/study_fields?expr="
 
-  search_expr = URLencode(search_expr %>% gsub("&", "", .))
+  search_expr = utils::URLencode(search_expr %>% gsub("&", "", .))
   request_fields = paste(request_fields, collapse = ",")
   query <- paste0(query_url, search_expr, "&fields=", request_fields)
   if (is.null(count))  { count <- 1e+06}
@@ -50,7 +51,7 @@ ct_search = function (
       query
       )
     if (search_result$status != 200)         {stop(httr::http_status(search_result)$message)}
-    x = search_result$content %>% rawToChar() %>% fromJSON()
+    x = search_result$content %>% rawToChar() %>% jsonlite::fromJSON()
     x = x$StudyFieldsResponse$StudyFields
     x = x[1:min(nrow(x),count),]
     return(if(is.null(x)){NA}else{x})
@@ -71,6 +72,7 @@ ct_search = function (
 #' @param remove_null_results should fields with nothing but null values be removed automatically from the result df?
 #'
 #' @return results as a data.frame
+#' @import magrittr
 #' @export
 #'
 get_ct_data = function(
@@ -90,7 +92,8 @@ get_ct_data = function(
   x = ct_search(search_expr, request_fields = paste(fields[1:min(length(fields),20)], collapse = ","), count = NULL)
   if(!all(is.na(x))){
     x = x  %>%
-    arrange(Rank) %>%  select(-Rank)
+    dplyr::arrange(Rank) %>%  
+      dplyr::select(-Rank)
 
 
 # loop through fields requested and join the results of API calls as needed
@@ -101,7 +104,7 @@ get_ct_data = function(
         message(paste0("Getting data... API call ",i+1," of ",calls + 1))
         y =x %>% bind_cols(
           ct_search(search_expr, request_fields = paste(fields[1:min(20,remain)], collapse = ",") , count = NULL )  %>%
-            arrange(Rank) %>%  select(-Rank)
+            dplyr::arrange(Rank) %>%  dplyr::select(-Rank)
         )
         x = y
       }
@@ -116,7 +119,7 @@ get_ct_data = function(
   # filter for results where the expression is found in the specified field
   if(!is.null(expr_in_field)){
     x = x %>%
-      filter(str_detect(.[[expr_in_field]], search_expr))
+      dplyr::filter(str_detect(.[[expr_in_field]], search_expr))
   }
 
   x = x %>%
@@ -125,7 +128,7 @@ get_ct_data = function(
   x = x[1:min(nrow(x),count),] # count as max results to return, done here after filtering for expression in field
 
   if(!is.data.frame(x)){
-    x = x %>% as.df %>% setNames(request_fields)
+    x = x %>% as.df %>% stats::setNames(request_fields)
   }
 
   return(x)

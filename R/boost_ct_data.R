@@ -36,7 +36,8 @@
 #' @param request_fields vector of field names to request from the API
 #' @param api_terms_max default 150, but reduce this is the fields are data-heavy and the API throws an error
 #'
-#' @return
+#' @return dataframe plus result fields from the API
+#' @import magrittr
 #' @export
 #'
 boost_ct_data = function(
@@ -51,18 +52,16 @@ boost_ct_data = function(
   }
   )
 
-  ## Inner function
-  round_up = function (x, digits=0) { posneg = sign(x);  z = trunc(abs(x) * 10 ^ (digits + 1)) / 10 ; z = floor(z * posneg + 0.5) / 10 ^ digits ; return(z) }
 
   orig_names = names(df)
 
   df = df %>%
-    rename ("search_col" = all_of(search_col_name_str))
+    dplyr::rename ("search_col" = tidyselect::all_of(search_col_name_str))
 
   all_possible_search_terms = df %>%
-    select(search_col) %>%
-    distinct %>%
-    na.omit() %>%
+    dplyr::select(search_col) %>%
+    dplyr::distinct %>%
+    stats::na.omit() %>%
     .[["search_col"]]
 
   calls_req = round_up( length(all_possible_search_terms)/api_terms_max )
@@ -97,16 +96,16 @@ boost_ct_data = function(
   }
 
   results = results %>%
-    na_if(y = "list()") %>%
-    na_if(y = "character(0)") %>%
-    setNames(c(search_col_name_str, request_fields))
+    dplyr::na_if(y = "list()") %>%
+    dplyr::na_if(y = "character(0)") %>%
+    stats::setNames(c(search_col_name_str, request_fields))
 
 
 
   df = df %>%
-    setNames( all_of(orig_names))
+    stats::setNames( tidyselect::all_of(orig_names))
   df = df %>%
-    left_join(results, by = search_col_name_str) %>%
+    dplyr::left_join(results, by = search_col_name_str) %>%
 
     return(df)
 }

@@ -13,6 +13,7 @@ as.df = function(x){df = as.data.frame(x,stringsAsFactors=F); return(df)}
 #' @param df input data.frame
 #'
 #' @return
+#' @import magrittr
 #' @export
 #'
 no_na_cols = function(df){df%>%.[,colSums(is.na(.))<nrow(.)]}
@@ -22,6 +23,7 @@ no_na_cols = function(df){df%>%.[,colSums(is.na(.))<nrow(.)]}
 #' @param df input data.frame
 #'
 #' @return
+#' @import magrittr
 #' @export
 #'
 no_na_rows = function(df){df%>%.[rowSums(is.na(.))!= ncol(.),]}
@@ -31,7 +33,7 @@ no_na_rows = function(df){df%>%.[rowSums(is.na(.))!= ncol(.),]}
 #' @return
 #' @export
 #'
-datetimestamp = function(){x = gsub("-|:| ","",now()); return(x)} # timestamp
+# datetimestamp = function(){x = gsub("-|:| ","",now()); return(x)} # timestamp
 
 substrRight <- function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
@@ -73,6 +75,7 @@ eval_as_text = function(x){eval(parse(text=x))}
 #' @param x input value
 #'
 #' @return
+#' @import magrittr
 #' @export
 #'
 unvector = function(x) {
@@ -92,6 +95,7 @@ unvector = function(x) {
 #' @param prefix character string to add as prefix
 #'
 #' @return
+#' @import magrittr
 #' @export
 #'
 prefix = function(x, prefix) {
@@ -112,12 +116,13 @@ prefix = function(x, prefix) {
 #' @param encoding character encoding
 #'
 #' @return
+#' @import magrittr
 #' @export
 #'
 split_longer = function(df,col_to_split,by_regex, encoding = "UTF-8") {
-  df[[col_to_split]] = df[[col_to_split]] %>% lapply(., function(x) { str_split(x, by_regex) })
+  df[[col_to_split]] = df[[col_to_split]] %>% lapply(., function(x) { stringr::str_split(x, by_regex) })
   while(class(df[[col_to_split]]) == "list"){
-    df = df %>% unnest_longer(col_to_split)}
+    df = df %>% tidyr::unnest_longer(col_to_split)}
   return(df)
 }
 
@@ -132,15 +137,15 @@ split_longer = function(df,col_to_split,by_regex, encoding = "UTF-8") {
 #'
 split_longer_vector = function( df, col_name_chr ){
   for(the_col in 1:length(col_name_chr)){
-    df[[all_of(col_name_chr)[[the_col]]]] = map(df[[all_of(col_name_chr)[[the_col]]]], function(i){
-      if(isTRUE(str_detect(i, "^c\\("))){  # This could be adapted to handle "list\\(" too -----------------------
+    df[[tidyselect::all_of(col_name_chr)[[the_col]]]] = purrr::map(df[[tidyselect::all_of(col_name_chr)[[the_col]]]], function(i){
+      if(isTRUE(stringr::str_detect(i, "^c\\("))){  # This could be adapted to handle "list\\(" too -----------------------
         i = eval_as_text(i) %>% paste0(collapse = ":::sep:::") # treats it as real vector, then pastes it to a string with the sep
       } else {i = i }
     })
   }
 
   df = df %>%
-    separate_rows(all_of(col_name_chr), sep = ":::sep:::")  ## This keeps the set of columns coordinated for the split-longer so there's no hash of their values
+    tidyr::separate_rows(tidyselect::all_of(col_name_chr), sep = ":::sep:::")  ## This keeps the set of columns coordinated for the split-longer so there's no hash of their values
   return(df)
 }
 
@@ -157,7 +162,7 @@ split_longer_any_vector_cols = function(df){
   for (any_col in seq_along(df)){
     this_col = names(df[any_col])
     if(
-      str_detect(df[[this_col]], "^c\\(") %>% any %>% isTRUE()
+      stringr::str_detect(df[[this_col]], "^c\\(") %>% any %>% isTRUE()
     ){
       df = df %>% split_longer_vector(this_col)
     }
