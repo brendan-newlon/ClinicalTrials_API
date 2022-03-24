@@ -11,6 +11,10 @@
 # Example code in package build process
 *-Ex.R
 
+# Broken or work-in-progress scripts
+*_exclude.R
+*_exclude.Rmd
+
 # Output files from R CMD build
 /*.tar.gz
 
