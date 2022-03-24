@@ -21,3 +21,6 @@ split_longer(df, col_to_split, by_regex, encoding = "UTF-8")
 \description{
 split and unnest_longer a column in a df by some regex value
 }
+\examples{
+df = data.frame(a = c("1, 2", "3, 4")) \%>\% split_longer(col_to_split = "a", by_regex = ", ")
+}

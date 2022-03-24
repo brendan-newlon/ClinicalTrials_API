@@ -2,13 +2,20 @@
 % Please edit documentation in R/shortcut_convenience_functions.R
 \name{substrRight}
 \alias{substrRight}
-\title{Generate a datetime stamp}
+\title{get the last n characters from the end of a string}
 \usage{
 substrRight(x, n)
 }
+\arguments{
+\item{n}{}
+}
 \value{
-
+a character substring
 }
 \description{
-Generate a datetime stamp
+get the last n characters from the end of a string
+}
+\examples{
+substrRight("malfunction", 8)
+
 }

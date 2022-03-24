@@ -15,3 +15,7 @@ split_longer_any_vector_cols(df)
 \description{
 split and unnest_longer all the columns of a df that contain vectors posing as text values
 }
+\examples{
+df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", "Condition")) \%>\% split_longer_any_vector_cols()
+
+}

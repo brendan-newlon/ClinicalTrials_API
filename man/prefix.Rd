@@ -17,3 +17,7 @@ prefix(x, prefix)
 \description{
 paste a prefix before value or values
 }
+\examples{
+prefix(c("data", "breakfast"), prefix = "my_")
+
+}

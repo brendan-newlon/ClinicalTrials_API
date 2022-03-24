@@ -17,3 +17,7 @@ split_longer_vector(df, col_name_chr)
 \description{
 split and unnest_longer the values in a column that are vectors posing as text
 }
+\examples{
+df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", "Condition")) \%>\% split_longer_vector("Condition")
+
+}

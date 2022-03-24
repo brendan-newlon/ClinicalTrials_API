@@ -15,3 +15,6 @@ no_na_cols(df)
 \description{
 Remove columns from a data.frame that have only NA values
 }
+\examples{
+df = data.frame(first = c(1,2,3,NA), second = c("a","b","c",NA), third = c(NA,NA,NA,NA)) \%>\% no_na_cols()
+}

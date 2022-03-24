@@ -2,7 +2,7 @@
 % Please edit documentation in R/get_ct_data.R
 \name{ct_search}
 \alias{ct_search}
-\title{search for a term in clinicaltrials data}
+\title{search for a term in clinicaltrials data -- but it's recommended to use the function get_ct_data instead as it returns a clean data.frame}
 \usage{
 ct_search(
   search_expr = "fatigue",
@@ -21,5 +21,9 @@ ct_search(
 results as a data.frame
 }
 \description{
-search for a term in clinicaltrials data
+search for a term in clinicaltrials data -- but it's recommended to use the function get_ct_data instead as it returns a clean data.frame
+}
+\examples{
+df = ct_search("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))
+
 }

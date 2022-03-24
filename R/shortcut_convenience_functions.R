@@ -5,6 +5,7 @@
 #' @param x object to convert to data.frame without factors
 #'
 #' @return df
+#' @examples x = as.df(c(1,2,3))
 #' @export
 as.df = function(x){df = as.data.frame(x,stringsAsFactors=F); return(df)}
 
@@ -13,33 +14,38 @@ as.df = function(x){df = as.data.frame(x,stringsAsFactors=F); return(df)}
 #' @param df input data.frame
 #'
 #' @return
-#' @import magrittr
+#' @examples df = data.frame(first = c(1,2,3,NA), second = c("a","b","c",NA), third = c(NA,NA,NA,NA)) %>% no_na_cols()
 #' @export
 #'
-no_na_cols = function(df){  
-  df%>%.[,colSums(is.na(.))<nrow(.)]}
+no_na_cols = function(df){
+  df %>%.[,colSums(is.na(.)) < nrow(.)]}
 
 #' Remove rows from a data.frame that have only NA values
 #'
 #' @param df input data.frame
 #'
 #' @return
-#' @import magrittr
+#' @examples df = data.frame(a = c(1,2,3,NA), b = c("a","b","c",NA)) %>% no_na_rows()
 #' @export
 #'
 no_na_rows = function(df){
   df%>%.[rowSums(is.na(.))!= ncol(.),]}
 
-#' Generate a datetime stamp
+
+#' get the last n characters from the end of a string
 #'
-#' @return
+#' @param x
+#' @param n
+#'
+#' @return a character substring
 #' @export
 #'
-# datetimestamp = function(){x = gsub("-|:| ","",now()); return(x)} # timestamp
-
-substrRight <- function(x, n){
+#' @examples substrRight("malfunction", 8)
+#'
+substrRight = function(x, n){
   substr(x, nchar(x)-n+1, nchar(x))
 }
+
 
 
 #' round up to a number of digits
@@ -49,8 +55,9 @@ substrRight <- function(x, n){
 #'
 #' @return
 #' @export
+#' @examples round_up(3.14159, 2)
 #'
-round_up <- function (x, digits=0)
+round_up = function (x, digits=0)
 {
   posneg = sign(x)
   z = trunc(abs(x) * 10 ^ (digits + 1)) / 10
@@ -68,6 +75,7 @@ round_up <- function (x, digits=0)
 #'
 #' @return
 #' @export
+#' @examples eval_as_text("c(\"x\", \"y\")")
 #'
 eval_as_text = function(x){eval(parse(text=x))}
 
@@ -79,6 +87,7 @@ eval_as_text = function(x){eval(parse(text=x))}
 #' @return
 #' @import magrittr
 #' @export
+#' @examples unvector("c(\"x\", \"y\")")
 #'
 unvector = function(x) {
   truth = try({
@@ -99,6 +108,7 @@ unvector = function(x) {
 #' @return
 #' @import magrittr
 #' @export
+#' @examples prefix(c("data", "breakfast"), prefix = "my_")
 #'
 prefix = function(x, prefix) {
   x = if(!is.na(x) && x != ""){
@@ -118,7 +128,7 @@ prefix = function(x, prefix) {
 #' @param encoding character encoding
 #'
 #' @return
-#' @import magrittr
+#' @examples df = data.frame(a = c("1, 2", "3, 4")) %>% split_longer(col_to_split = "a", by_regex = ", ")
 #' @export
 #'
 split_longer = function(df,col_to_split,by_regex, encoding = "UTF-8") {
@@ -136,6 +146,7 @@ split_longer = function(df,col_to_split,by_regex, encoding = "UTF-8") {
 #'
 #' @return
 #' @export
+#' @examples df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", "Condition")) %>% split_longer_vector("Condition")
 #'
 split_longer_vector = function( df, col_name_chr ){
   for(the_col in 1:length(col_name_chr)){
@@ -159,6 +170,7 @@ split_longer_vector = function( df, col_name_chr ){
 #'
 #' @return
 #' @export
+#' @examples df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", "Condition")) %>% split_longer_any_vector_cols()
 #'
 split_longer_any_vector_cols = function(df){
   for (any_col in seq_along(df)){

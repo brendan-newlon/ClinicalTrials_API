@@ -17,3 +17,7 @@ a longer dataframe
 \description{
 Unnest_longer the vector values for sets of columns related to condition and intervention that should remain correlated
 }
+\examples{
+df = df \%>\%
+
+}

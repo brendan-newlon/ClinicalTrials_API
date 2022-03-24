@@ -21,3 +21,7 @@ dataframe plus result fields from the API
 \description{
 Enhance a dataframe by searching the clinicaltrials API for values in a specified column and requesting additional fields of results from the API to add as new columns to your data.frame
 }
+\examples{
+df = df \%>\% boost_ct_data(search_col_name_str = "NCTId", request_fields = get_ct_fields(starts_with_str = "Intervention"))
+
+}

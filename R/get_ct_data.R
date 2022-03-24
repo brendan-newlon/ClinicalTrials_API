@@ -28,6 +28,7 @@
 #' @return results as a data.frame
 #' @import magrittr
 #' @export
+#' @examples df = ct_search("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))
 #'
 ct_search = function (
   search_expr = "fatigue",
@@ -50,11 +51,11 @@ ct_search = function (
     search_result = httr::GET(
       query
       )
-    if (search_result$status != 200)         { 
+    if (search_result$status != 200)         {
       stop(httr::http_status(search_result)$message)
       }
-    x = search_result$content %>% 
-      rawToChar() %>% 
+    x = search_result$content %>%
+      rawToChar() %>%
       jsonlite::fromJSON()
     x = x$StudyFieldsResponse$StudyFields
     x = x[1:min(nrow(x),count),]
@@ -78,8 +79,8 @@ ct_search = function (
 #' @return results as a data.frame
 #' @import magrittr
 #' @export
-#' 
-#' @example df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))
+#'
+#' @examples df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))
 #'
 get_ct_data = function(
   search_expr ,
@@ -89,7 +90,7 @@ get_ct_data = function(
   remove_null_results = F ## ------ if TRUE, this seems to be broken. Eliminates columns with some empty results, even if some results are there
   ){
   ## api limits to 20 fields requested per query. How many api calls are required to get all fields?
-  calls = ((length(request_fields)-min(length(request_fields),20))/19 ) %>% 
+  calls = ((length(request_fields)-min(length(request_fields),20))/19 ) %>%
     round_up()
 
   fields = request_fields # a c() of field names as per https://clinicaltrials.gov/api/info/study_fields_list
@@ -99,7 +100,7 @@ get_ct_data = function(
   x = ct_search(search_expr, request_fields = paste(fields[1:min(length(fields),20)], collapse = ","), count = NULL)
   if(!all(is.na(x))){
     x = x  %>%
-    dplyr::arrange(Rank) %>%  
+    dplyr::arrange(Rank) %>%
       dplyr::select(-Rank)
 
 
@@ -109,10 +110,10 @@ get_ct_data = function(
         if(length(fields) > 20){     fields = fields[21:length(fields)] }
         remain = length(fields)
         message(paste0("Getting data... API call ",i+1," of ",calls + 1))
-        y =x %>% 
+        y =x %>%
           dplyr::bind_cols(
           ct_search(search_expr, request_fields = paste(fields[1:min(20,remain)], collapse = ",") , count = NULL )  %>%
-            dplyr::arrange(Rank) %>%  
+            dplyr::arrange(Rank) %>%
             dplyr::select(-Rank)
         )
         x = y
@@ -137,7 +138,7 @@ get_ct_data = function(
   x = x[1:min(nrow(x),count),] # count as max results to return, done here after filtering for expression in field
 
   if(!is.data.frame(x)){
-    x = x %>% as.df %>% 
+    x = x %>% as.df %>%
       stats::setNames(request_fields)
   }
 

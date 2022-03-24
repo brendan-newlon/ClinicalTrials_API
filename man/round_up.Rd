@@ -17,3 +17,7 @@ round_up(x, digits = 0)
 \description{
 round up to a number of digits
 }
+\examples{
+round_up(3.14159, 2)
+
+}

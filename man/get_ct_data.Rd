@@ -29,3 +29,7 @@ results as a data.frame
 \description{
 request result fields from clinicaltrials API
 }
+\examples{
+df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))
+
+}

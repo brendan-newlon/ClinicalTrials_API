@@ -15,3 +15,7 @@ unvector(x)
 \description{
 convert vector-like text into a real vector
 }
+\examples{
+unvector("c(\"x\", \"y\")")
+
+}

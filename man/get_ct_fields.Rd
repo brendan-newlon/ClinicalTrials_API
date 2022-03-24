@@ -26,3 +26,9 @@ a vector naming the fields available via the ClinicalTrials API, optionally filt
 \description{
 request a vector of the names of fields available from the clinicaltrials API
 }
+\examples{
+get_ct_fields()
+get_ct_fields(starts_with_str = "Condition")
+get_ct_fields(contains_str = "Arm")
+
+}

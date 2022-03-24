@@ -39,8 +39,8 @@
 #' @return dataframe plus result fields from the API
 #' @import magrittr
 #' @export
-#' 
-#' @example df = df %>% boost_ct_data(search_col_name_str = "NCTId", request_fields = get_ct_fields(starts_with_str = "Intervention"))
+#'
+#' @examples df = df %>% boost_ct_data(search_col_name_str = "NCTId", request_fields = get_ct_fields(starts_with_str = "Intervention"))
 #'
 boost_ct_data = function(
   df,

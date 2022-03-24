@@ -15,3 +15,6 @@ no_na_rows(df)
 \description{
 Remove rows from a data.frame that have only NA values
 }
+\examples{
+df = data.frame(a = c(1,2,3,NA), b = c("a","b","c",NA)) \%>\% no_na_rows()
+}

@@ -15,3 +15,7 @@ eval_as_text(x)
 \description{
 take a variable input as text and parse/eval it
 }
+\examples{
+eval_as_text("c(\"x\", \"y\")")
+
+}

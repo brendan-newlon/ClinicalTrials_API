@@ -15,3 +15,6 @@ df
 \description{
 as.df shortcut function
 }
+\examples{
+x = as.df(c(1,2,3))
+}
