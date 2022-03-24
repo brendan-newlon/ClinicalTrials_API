@@ -10,6 +10,11 @@
 #'
 #' @return a vector naming the fields available via the ClinicalTrials API, optionally filtered
 #' @export
+#' 
+#' @examples 
+#' get_ct_fields()
+#' get_ct_fields(starts_with_str = "Condition")
+#' get_ct_fields(contains_str = "Arm")
 #'
 get_ct_fields = function(all = F, starts_with_str = NULL, contains_str = NULL, case_sensitive=F){
   

@@ -12,6 +12,11 @@
 #'
 #' @return a longer dataframe 
 #' @export
+#' 
+#' @example 
+#' df = df %>% 
+#    select(c("NCTId", starts_with("Intervention"))) %>% 
+#    expand_ct_feature_cols("Intervention")
 #'
 expand_ct_feature_cols = function(
   df,

@@ -19,7 +19,7 @@
 
 
 
-#' search for a term in clinicaltrials data
+#' search for a term in clinicaltrials data -- but it's recommended to use the function get_ct_data instead as it returns a clean data.frame
 #'
 #' @param search_expr the expression to search for
 #' @param request_fields which fields to request from the API
@@ -78,6 +78,8 @@ ct_search = function (
 #' @return results as a data.frame
 #' @import magrittr
 #' @export
+#' 
+#' @example df = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))
 #'
 get_ct_data = function(
   search_expr ,
