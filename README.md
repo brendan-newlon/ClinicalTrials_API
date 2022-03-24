@@ -2,17 +2,19 @@
 R functions for getting and cleaning data from the clinicaltrials.gov API
 
 ```
-devtools::install_github("brendan-newlon/ClinicalTrials_API", force = T)
+install.packages("devtools")
+devtools::install_github("brendan-newlon/ClinicalTrials_API")
 library(ClinicalTrialsAPI)
 ```
 
-Use ```get_ct_fields()``` to return a character vector of all available fields from the clinicaltrials.gov API
+Use ```get_ct_fields()``` to return a character vector of all available fields from the clinicaltrials.gov API. 
+To be more selective, you can search for all the fields starting with "Condition" for example, like this: ```get_ct_fields(starts_with_str = "Condition")``` or all the fields that contain "Arm" somewhere in the name, like this: ```get_ct_fields(contains_str = "Arm")```
 
 If you wanted to get a data.frame of all of the study IDs and Condition-related data about myalgic encephalomyelitis, for example:  
 
 ```x = get_ct_data("myalgic encephalomyelitis", request_fields = c("NCTId", get_ct_fields(starts_with_str = "Condition")))```
 
-Then, if you wanted to enhance the data you got by adding the Intervention-related fields to it:
+Then, if you wanted to enhance the data about the studies you found by adding Intervention-related fields to it:
 
 ```y = x %>% boost_ct_data(search_col_name_str = "NCTId", request_fields = get_ct_fields(starts_with_str = "Intervention"))```
   
