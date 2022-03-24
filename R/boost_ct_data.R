@@ -59,7 +59,7 @@ boost_ct_data = function(
 
   all_possible_search_terms = df %>%
     dplyr::select(search_col) %>%
-    dplyr::distinct %>%
+    dplyr::distinct() %>%
     stats::na.omit() %>%
     .[["search_col"]]
 
@@ -89,7 +89,7 @@ boost_ct_data = function(
     )
 
     if(length(names(more_results))){
-      results = bind_rows(results,more_results)
+      results = dplyr::bind_rows(results,more_results)
     }
 
   }
