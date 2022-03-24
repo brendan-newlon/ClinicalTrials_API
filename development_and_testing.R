@@ -13,7 +13,7 @@ usethis::use_pipe(export = TRUE)
 
 devtools::document()
 
-devtools::install_github("brendan-newlon/R_ClinicalTrials_API", force = T)
+devtools::install_github("brendan-newlon/ClinicalTrials_API", force = T)
 
 library(ClinicalTrialsAPI)
 
