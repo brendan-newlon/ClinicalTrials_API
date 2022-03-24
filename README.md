@@ -1,8 +1,8 @@
-# R_ClinicalTrials_API
+# ClinicalTrials_API
 R functions for getting and cleaning data from the clinicaltrials.gov API
 
 ```
-devtools::install_github("brendan-newlon/R_ClinicalTrials_API", force = T)
+devtools::install_github("brendan-newlon/ClinicalTrials_API", force = T)
 library(ClinicalTrialsAPI)
 ```
 
